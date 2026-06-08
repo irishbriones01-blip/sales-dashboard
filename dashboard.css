@@ -205,6 +205,47 @@ body {
   line-height: 1;
 }
 
+/* TOP PERFORMER CHARTS */
+.charts-section { padding: 0 24px 20px; }
+.section-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-mid);
+  margin-bottom: 12px;
+}
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+.chart-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  height: 230px;
+  display: flex;
+  flex-direction: column;
+}
+.chart-card-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-light);
+  margin-bottom: 10px;
+}
+.chart-canvas-wrap { position: relative; flex: 1; min-height: 0; }
+.charts-empty {
+  color: var(--text-light);
+  font-style: italic;
+  font-size: 13px;
+  padding: 12px 0 4px;
+}
+
 /* STATUS BAR */
 .status-bar {
   display: flex;

@@ -60,6 +60,8 @@ const MONTHS_LONG = ['January','February','March','April','May','June',
 const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun',
   'Jul','Aug','Sep','Oct','Nov','Dec'];
 
+let chartInstances = [];
+
 let state = {
   activeReport: DEFAULT_REPORT,
   entries: [],          // every saved {date, rep, ...metrics} row for the active report
@@ -187,6 +189,7 @@ function applyActiveRange() {
   const range = getRange(state.activeRange);
   state.rows = aggregateRange(state.entries, range.start, range.end);
   renderSummary(state.rows);
+  renderCharts(state.rows);
   renderTable(state.rows);
 
   if (!state.entries.length) {
@@ -222,6 +225,7 @@ async function loadData({ silent = false } = {}) {
     state.entries = [];
     state.rows = [];
     renderSummary([]);
+    renderCharts([]);
     renderTable([]);
     showError(
       `The "${report.label}" report data could not be loaded. Make sure ${report.dataUrl} exists next to this page.`,
@@ -256,6 +260,80 @@ function renderSummary(rows) {
   });
 
   document.getElementById('summaryCards').innerHTML = cards.join('');
+}
+
+const TOP_N = 5;
+const CHART_COLOR = '#ff7a59';
+
+function destroyCharts() {
+  chartInstances.forEach(c => c.destroy());
+  chartInstances = [];
+}
+
+// One small "Top Performers" bar chart per metric in the active report,
+// each showing the highest N reps for that metric in the selected range.
+function renderCharts(rows) {
+  destroyCharts();
+  const report = currentReport();
+  const grid = document.getElementById('chartsGrid');
+
+  if (!rows.length) {
+    grid.innerHTML = '<p class="charts-empty">No activity to chart for this date range.</p>';
+    return;
+  }
+
+  grid.innerHTML = report.metrics.map(m => `
+    <div class="chart-card">
+      <div class="chart-card-title">${escHtml(m.label)}</div>
+      <div class="chart-canvas-wrap"><canvas id="chart-${m.key}"></canvas></div>
+    </div>`).join('');
+
+  report.metrics.forEach(m => {
+    const top = [...rows]
+      .filter(r => (r[m.key] || 0) > 0)
+      .sort((a, b) => (b[m.key] || 0) - (a[m.key] || 0))
+      .slice(0, TOP_N);
+
+    const canvas = document.getElementById(`chart-${m.key}`);
+    if (!canvas) return;
+
+    if (!top.length) {
+      canvas.replaceWith(Object.assign(document.createElement('p'), {
+        className: 'charts-empty',
+        textContent: 'No activity recorded.',
+      }));
+      return;
+    }
+
+    chartInstances.push(new Chart(canvas, {
+      type: 'bar',
+      data: {
+        labels: top.map(r => r.rep),
+        datasets: [{
+          data: top.map(r => r[m.key] || 0),
+          backgroundColor: CHART_COLOR,
+          borderRadius: 4,
+          maxBarThickness: 22,
+        }],
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => formatMetric(ctx.parsed.x, m) } },
+        },
+        scales: {
+          x: {
+            beginAtZero: true,
+            ticks: { callback: v => formatMetric(v, m) },
+          },
+          y: { ticks: { autoSkip: false } },
+        },
+      },
+    }));
+  });
 }
 
 function renderTable(rows) {
