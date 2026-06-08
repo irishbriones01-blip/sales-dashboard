@@ -12,6 +12,7 @@ const REPORTS = {
   activities: {
     label: 'Sales Activities',
     dataUrl: 'data/report-activities.json',
+    dashboardUrl: 'https://app.hubspot.com/reports-dashboard/47316647/view/19277797',
     metrics: [
       { key: 'pipelineTouch',  label: 'Pipeline Touch' },
       { key: 'emailsSent',     label: 'Emails Sent' },
@@ -27,6 +28,7 @@ const REPORTS = {
   bulk: {
     label: 'Bulk Orders',
     dataUrl: 'data/report-bulk.json',
+    dashboardUrl: 'https://app.hubspot.com/reports-dashboard/47316647/view/19513019',
     metrics: [
       { key: 'quotes',          label: 'Quotes Created' },
       { key: 'quotesValue',     label: 'Quotes Value', money: true },
@@ -41,6 +43,7 @@ const REPORTS = {
   teamStore: {
     label: 'Team Store',
     dataUrl: 'data/report-team-store.json',
+    dashboardUrl: 'https://app.hubspot.com/reports-dashboard/47316647/view/19795146',
     metrics: [
       { key: 'buildRequests',       label: 'Build Requests' },
       { key: 'wentLive',            label: 'Went Live' },
@@ -55,16 +58,23 @@ const REPORTS = {
 };
 const DEFAULT_REPORT = 'activities';
 
-// Where "open in HubSpot" links/clicks send people — the team's existing
-// Sales Activity reports dashboard inside HubSpot. (HubSpot doesn't support
-// pre-filtered deep links — we checked both dashboards and record lists — so
-// every number/chart points at this same dashboard; from there, HubSpot's
-// own Owner + Date filters narrow it down to the rep and day you're after.)
-const HUBSPOT_DASHBOARD_URL = 'https://app.hubspot.com/reports-dashboard/47316647/view/19277797';
+// Where "open in HubSpot" links/clicks send people — each report points at
+// its own matching HubSpot reports dashboard (set via `dashboardUrl` above).
+// (HubSpot doesn't support pre-filtered deep links — we checked both
+// dashboards and record lists — so every number/chart for a given report
+// opens that report's dashboard; from there, HubSpot's own Owner + Date
+// filters narrow it down to the rep and day you're after.)
+function hubspotDashboardUrl() {
+  return currentReport().dashboardUrl || '';
+}
 
-// Wraps a displayed value so it opens the HubSpot dashboard in a new tab.
+// Wraps a displayed value so it opens the active report's HubSpot dashboard
+// in a new tab. Falls back to plain (non-linked) text if a report has no
+// dashboardUrl configured.
 function hsLink(display) {
-  return `<a class="hs-link" href="${HUBSPOT_DASHBOARD_URL}" target="_blank" rel="noopener" title="Open in HubSpot">${display}</a>`;
+  const url = hubspotDashboardUrl();
+  if (!url) return `<span>${display}</span>`;
+  return `<a class="hs-link" href="${url}" target="_blank" rel="noopener" title="Open in HubSpot">${display}</a>`;
 }
 
 const MONTHS_LONG = ['January','February','March','April','May','June',
@@ -332,7 +342,10 @@ function renderCharts(rows) {
         indexAxis: 'y',
         responsive: true,
         maintainAspectRatio: false,
-        onClick: () => window.open(HUBSPOT_DASHBOARD_URL, '_blank', 'noopener'),
+        onClick: () => {
+          const url = hubspotDashboardUrl();
+          if (url) window.open(url, '_blank', 'noopener');
+        },
         onHover: (evt, elements) => {
           evt.native.target.style.cursor = elements.length ? 'pointer' : 'default';
         },
