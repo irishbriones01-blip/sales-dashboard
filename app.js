@@ -1,14 +1,59 @@
 // app.js
-// Drives the dashboard webpage. Unlike the old browser-extension version,
-// this never talks to HubSpot directly — it just loads the data file that
-// fetch-report.js saves once a day (data/activity.json) and adds those
-// numbers up however the visitor wants to look at them (today, this week,
-// last month, a custom range, etc.).
+// Drives the dashboard webpage. It never talks to HubSpot directly — it just
+// loads whichever saved data file matches the selected report (see REPORTS
+// below) and adds those numbers up however the visitor wants to look at them
+// (today, this week, last month, a custom range, etc.).
 
-const DATA_URL = 'data/activity.json';
-
-const METRIC_KEYS = ['pipelineTouch', 'emailsSent', 'emailsReceived',
-  'smsSent', 'smsReceived', 'chatsEngaged', 'tasksCreated', 'tasksCompleted'];
+// ── Report definitions ──
+// Each report points at its own data file and lists the columns/cards it
+// shows. Adding a new report later just means adding an entry here (plus an
+// <option> in the dropdown in index.html) — everything else is generic.
+const REPORTS = {
+  activities: {
+    label: 'Sales Activities',
+    dataUrl: 'data/report-activities.json',
+    metrics: [
+      { key: 'pipelineTouch',  label: 'Pipeline Touch' },
+      { key: 'emailsSent',     label: 'Emails Sent' },
+      { key: 'emailsReceived', label: 'Emails Received' },
+      { key: 'smsSent',        label: 'SMS Sent' },
+      { key: 'smsReceived',    label: 'SMS Received' },
+      { key: 'chatsEngaged',   label: 'Chats Engaged' },
+      { key: 'tasksCreated',   label: 'Tasks Created' },
+      { key: 'tasksCompleted', label: 'Tasks Completed' },
+    ],
+    summary: ['pipelineTouch', 'emailsSent', 'smsSent', 'chatsEngaged', 'tasksCompleted'],
+  },
+  bulk: {
+    label: 'Bulk Orders',
+    dataUrl: 'data/report-bulk.json',
+    metrics: [
+      { key: 'quotes',          label: 'Quotes Created' },
+      { key: 'quotesValue',     label: 'Quotes Value', money: true },
+      { key: 'quotesCommitted', label: 'Quotes Committed' },
+      { key: 'closedLost',      label: 'Closed Lost Deals' },
+      { key: 'bulkConversions', label: 'Bulk Conversions' },
+      { key: 'bulkRevenue',     label: 'Bulk Revenue', money: true },
+      { key: 'bulkOrders',      label: 'Bulk Orders Written' },
+    ],
+    summary: ['quotes', 'quotesValue', 'bulkConversions', 'bulkRevenue', 'bulkOrders'],
+  },
+  teamStore: {
+    label: 'Team Store',
+    dataUrl: 'data/report-team-store.json',
+    metrics: [
+      { key: 'buildRequests',       label: 'Build Requests' },
+      { key: 'wentLive',            label: 'Went Live' },
+      { key: 'storesWithRevenue',   label: 'Stores w/ Revenue' },
+      { key: 'grossRevenue',        label: 'Gross Revenue', money: true },
+      { key: 'convertsWithRevenue', label: 'Open Stores w/ Revenue' },
+      { key: 'convertsNoRevenue',   label: 'Open Stores w/ No Revenue' },
+      { key: 'transactions',        label: 'TS Transactions' },
+    ],
+    summary: ['buildRequests', 'wentLive', 'storesWithRevenue', 'grossRevenue', 'transactions'],
+  },
+};
+const DEFAULT_REPORT = 'activities';
 
 const MONTHS_LONG = ['January','February','March','April','May','June',
   'July','August','September','October','November','December'];
@@ -16,8 +61,9 @@ const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun',
   'Jul','Aug','Sep','Oct','Nov','Dec'];
 
 let state = {
-  entries: [],          // every saved {date, rep, ...metrics} row from the data file
-  generatedAt: null,    // when the data file was last produced
+  activeReport: DEFAULT_REPORT,
+  entries: [],          // every saved {date, rep, ...metrics} row for the active report
+  generatedAt: null,    // when that report's data file was last produced
   rows: [],             // the per-rep totals for the currently selected range
   loading: false,
   activeRange: 'yesterday',
@@ -28,6 +74,10 @@ let state = {
   sortCol: 'rep',
   sortDir: 'asc',
 };
+
+function currentReport() {
+  return REPORTS[state.activeReport] || REPORTS[DEFAULT_REPORT];
+}
 
 function eod(d) {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
@@ -103,8 +153,18 @@ function formatTimestamp(iso) {
   return `${datePart} at ${timePart}`;
 }
 
+// Numbers display as plain counts; metrics flagged "money" get a $ and cents.
+function formatMetric(value, metric) {
+  const n = Number(value) || 0;
+  if (metric && metric.money) {
+    return '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  return n.toLocaleString();
+}
+
 // ── Add up every saved day×rep entry that falls inside [start, end] ──
 function aggregateRange(entries, start, end) {
+  const metricKeys = currentReport().metrics.map(m => m.key);
   const startKey = formatISO(start);
   const endKey = formatISO(end);
   const totals = {};
@@ -113,13 +173,13 @@ function aggregateRange(entries, start, end) {
     if (e.date < startKey || e.date > endKey) continue;
     if (!totals[e.rep]) {
       totals[e.rep] = { rep: e.rep };
-      METRIC_KEYS.forEach(k => { totals[e.rep][k] = 0; });
+      metricKeys.forEach(k => { totals[e.rep][k] = 0; });
     }
-    METRIC_KEYS.forEach(k => { totals[e.rep][k] += e[k] || 0; });
+    metricKeys.forEach(k => { totals[e.rep][k] += e[k] || 0; });
   }
 
   return Object.values(totals)
-    .filter(r => METRIC_KEYS.some(k => r[k] > 0))
+    .filter(r => metricKeys.some(k => r[k] > 0))
     .sort((a, b) => a.rep.localeCompare(b.rep));
 }
 
@@ -138,16 +198,18 @@ function applyActiveRange() {
   }
 }
 
-// ── Load the saved data file (produced once a day by fetch-report.js) ──
+// ── Load the saved data file for whichever report is currently selected ──
 async function loadData({ silent = false } = {}) {
   if (state.loading) return;
   state.loading = true;
   if (!silent) showLoading(true);
   hideError();
 
+  const report = currentReport();
+
   try {
-    const res = await fetch(`${DATA_URL}?_=${Date.now()}`, { cache: 'no-store' });
-    if (!res.ok) throw new Error(`Could not load ${DATA_URL} (HTTP ${res.status})`);
+    const res = await fetch(`${report.dataUrl}?_=${Date.now()}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Could not load ${report.dataUrl} (HTTP ${res.status})`);
     const data = await res.json();
 
     state.entries = data.entries || [];
@@ -162,7 +224,7 @@ async function loadData({ silent = false } = {}) {
     renderSummary([]);
     renderTable([]);
     showError(
-      'The saved report data could not be loaded. Make sure the daily fetch has run at least once and that data/activity.json exists next to this page.',
+      `The "${report.label}" report data could not be loaded. Make sure ${report.dataUrl} exists next to this page.`,
       err.message,
       'Could not load report data'
     );
@@ -174,50 +236,77 @@ async function loadData({ silent = false } = {}) {
 }
 
 function renderSummary(rows) {
+  const report = currentReport();
   const sum = key => rows.reduce((acc, r) => acc + (r[key] || 0), 0);
-  document.getElementById('valReps').textContent = rows.length || '-';
-  document.getElementById('valPipeline').textContent = sum('pipelineTouch').toLocaleString();
-  document.getElementById('valEmails').textContent = sum('emailsSent').toLocaleString();
-  document.getElementById('valSms').textContent = sum('smsSent').toLocaleString();
-  document.getElementById('valTasks').textContent = sum('tasksCompleted').toLocaleString();
-  document.getElementById('valChats').textContent = sum('chatsEngaged').toLocaleString();
+
+  const cards = [`
+    <div class="card" id="cardReps">
+      <div class="card-label">Active Reps</div>
+      <div class="card-value">${rows.length || '-'}</div>
+    </div>`];
+
+  report.summary.forEach(key => {
+    const metric = report.metrics.find(m => m.key === key);
+    if (!metric) return;
+    cards.push(`
+    <div class="card">
+      <div class="card-label">${escHtml(metric.label)}</div>
+      <div class="card-value">${formatMetric(sum(key), metric)}</div>
+    </div>`);
+  });
+
+  document.getElementById('summaryCards').innerHTML = cards.join('');
 }
 
 function renderTable(rows) {
+  const report = currentReport();
   const sorted = sortRows(rows, state.sortCol, state.sortDir);
+  const thead = document.getElementById('tableHead');
   const tbody = document.getElementById('tableBody');
   const tfoot = document.getElementById('tableFoot');
+  const colCount = report.metrics.length + 1;
+
+  thead.innerHTML = `<tr>
+    <th class="sortable" data-col="rep">Rep <span class="sort-icon">&#8645;</span></th>
+    ${report.metrics.map(m =>
+      `<th class="sortable num" data-col="${m.key}">${escHtml(m.label)} <span class="sort-icon">&#8645;</span></th>`
+    ).join('')}
+  </tr>`;
+  const activeTh = thead.querySelector(`th[data-col="${state.sortCol}"]`);
+  if (activeTh) activeTh.classList.add(state.sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+  bindSortHeaders();
 
   if (!sorted.length) {
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="9">No HubSpot activity recorded for this date range.</td></tr>';
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="${colCount}">No activity recorded for this date range.</td></tr>`;
     tfoot.innerHTML = '';
     return;
   }
 
   tbody.innerHTML = sorted.map(row => `<tr>
     <td>${escHtml(row.rep || '-')}</td>
-    <td class="num">${row.pipelineTouch || 0}</td>
-    <td class="num">${row.emailsSent || 0}</td>
-    <td class="num">${row.emailsReceived || 0}</td>
-    <td class="num">${row.smsSent || 0}</td>
-    <td class="num">${row.smsReceived || 0}</td>
-    <td class="num">${row.chatsEngaged || 0}</td>
-    <td class="num">${row.tasksCreated || 0}</td>
-    <td class="num">${row.tasksCompleted || 0}</td>
+    ${report.metrics.map(m => `<td class="num">${formatMetric(row[m.key] || 0, m)}</td>`).join('')}
   </tr>`).join('');
 
   const sum = key => sorted.reduce((a, r) => a + (r[key] || 0), 0);
   tfoot.innerHTML = `<tr>
     <td><strong>Totals</strong></td>
-    <td class="num"><strong>${sum('pipelineTouch')}</strong></td>
-    <td class="num"><strong>${sum('emailsSent')}</strong></td>
-    <td class="num"><strong>${sum('emailsReceived')}</strong></td>
-    <td class="num"><strong>${sum('smsSent')}</strong></td>
-    <td class="num"><strong>${sum('smsReceived')}</strong></td>
-    <td class="num"><strong>${sum('chatsEngaged')}</strong></td>
-    <td class="num"><strong>${sum('tasksCreated')}</strong></td>
-    <td class="num"><strong>${sum('tasksCompleted')}</strong></td>
+    ${report.metrics.map(m => `<td class="num"><strong>${formatMetric(sum(m.key), m)}</strong></td>`).join('')}
   </tr>`;
+}
+
+function bindSortHeaders() {
+  document.querySelectorAll('th.sortable').forEach(th => {
+    th.addEventListener('click', () => {
+      const col = th.dataset.col;
+      if (state.sortCol === col) {
+        state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        state.sortCol = col;
+        state.sortDir = col === 'rep' ? 'asc' : 'desc';
+      }
+      renderTable(state.rows);
+    });
+  });
 }
 
 function sortRows(rows, col, dir) {
@@ -283,12 +372,27 @@ function setActiveFilter(key) {
   updateRangeDisplay();
 }
 
+// Switches which report is shown: points state at the new report's data file,
+// resets sorting if the old sort column doesn't exist on the new report, and
+// reloads + re-renders everything.
+function switchReport(id) {
+  if (!REPORTS[id] || id === state.activeReport) return;
+  state.activeReport = id;
+
+  const validCols = ['rep', ...REPORTS[id].metrics.map(m => m.key)];
+  if (!validCols.includes(state.sortCol)) {
+    state.sortCol = 'rep';
+    state.sortDir = 'asc';
+  }
+
+  loadData();
+}
+
 function exportCSV() {
   if (!state.rows.length) return;
-  const headers = ['Rep','Pipeline Touch','Emails Sent','Emails Received',
-    'SMS Sent','SMS Received','Chats Engaged','Tasks Created','Tasks Completed'];
-  const cols = ['rep','pipelineTouch','emailsSent','emailsReceived',
-    'smsSent','smsReceived','chatsEngaged','tasksCreated','tasksCompleted'];
+  const report = currentReport();
+  const headers = ['Rep', ...report.metrics.map(m => m.label)];
+  const cols = ['rep', ...report.metrics.map(m => m.key)];
 
   const lines = [
     headers.map(h => `"${h}"`).join(','),
@@ -301,8 +405,9 @@ function exportCSV() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   const range = getRange(state.activeRange);
+  const slug = report.label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   a.href = url;
-  a.download = `hubspot-report_${formatISO(range.start)}_${formatISO(range.end)}.csv`;
+  a.download = `${slug}-report_${formatISO(range.start)}_${formatISO(range.end)}.csv`;
   a.click();
   URL.revokeObjectURL(url);
 }
@@ -310,12 +415,15 @@ function exportCSV() {
 document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(location.search);
   if (params.get('range')) state.activeRange = params.get('range');
+  if (params.get('report') && REPORTS[params.get('report')]) state.activeReport = params.get('report');
   if (params.get('tab') === 'about') {
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
     document.getElementById('tabAbout').classList.add('active');
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelector('[data-tab="about"]').classList.add('active');
   }
+
+  document.getElementById('reportPicker').value = state.activeReport;
 
   const range = getRange(state.activeRange);
   state.navYear = range.start.getFullYear();
@@ -330,6 +438,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const target = `tab${btn.dataset.tab.charAt(0).toUpperCase() + btn.dataset.tab.slice(1)}`;
       document.getElementById(target).classList.add('active');
     });
+  });
+
+  document.getElementById('reportPicker').addEventListener('change', (e) => {
+    switchReport(e.target.value);
   });
 
   document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -372,23 +484,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('btnRefresh').addEventListener('click', () => loadData());
   document.getElementById('btnExport').addEventListener('click', exportCSV);
-
-  document.querySelectorAll('th.sortable').forEach(th => {
-    th.addEventListener('click', () => {
-      const col = th.dataset.col;
-      if (state.sortCol === col) {
-        state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
-      } else {
-        state.sortCol = col;
-        state.sortDir = col === 'rep' ? 'asc' : 'desc';
-      }
-      document.querySelectorAll('th.sortable').forEach(h => {
-        h.classList.remove('sort-asc', 'sort-desc');
-      });
-      th.classList.add(state.sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
-      renderTable(state.rows);
-    });
-  });
 
   loadData();
 });

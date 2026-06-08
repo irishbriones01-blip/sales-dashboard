@@ -21,6 +21,15 @@
 
 <main id="tabDashboard" class="tab-content active">
   <section class="date-bar">
+    <div class="report-picker">
+      <label for="reportPicker">Report</label>
+      <select id="reportPicker">
+        <option value="activities">Sales Activities</option>
+        <option value="bulk">Bulk Orders</option>
+        <option value="teamStore">Team Store</option>
+      </select>
+    </div>
+
     <div class="quick-filters">
       <button class="filter-btn" data-range="today">Today</button>
       <button class="filter-btn active" data-range="yesterday">Yesterday</button>
@@ -46,32 +55,7 @@
     <div class="active-range-display" id="rangeDisplay">-</div>
   </section>
 
-  <section class="summary-cards" id="summaryCards">
-    <div class="card" id="cardReps">
-      <div class="card-label">Active Reps</div>
-      <div class="card-value" id="valReps">-</div>
-    </div>
-    <div class="card" id="cardPipeline">
-      <div class="card-label">Pipeline Touches</div>
-      <div class="card-value" id="valPipeline">-</div>
-    </div>
-    <div class="card" id="cardEmails">
-      <div class="card-label">Emails Sent</div>
-      <div class="card-value" id="valEmails">-</div>
-    </div>
-    <div class="card" id="cardSms">
-      <div class="card-label">SMS Sent</div>
-      <div class="card-value" id="valSms">-</div>
-    </div>
-    <div class="card" id="cardTasks">
-      <div class="card-label">Tasks Completed</div>
-      <div class="card-value" id="valTasks">-</div>
-    </div>
-    <div class="card" id="cardChats">
-      <div class="card-label">Chats Engaged</div>
-      <div class="card-value" id="valChats">-</div>
-    </div>
-  </section>
+  <section class="summary-cards" id="summaryCards"></section>
 
   <div class="status-bar" id="statusBar">
     <span id="statusMsg">Loading saved report data&hellip;</span>
@@ -94,22 +78,10 @@
     </div>
 
     <table class="data-table" id="dataTable">
-      <thead>
-        <tr>
-          <th class="sortable" data-col="rep">Rep <span class="sort-icon">&#8645;</span></th>
-          <th class="sortable num" data-col="pipelineTouch">Pipeline Touch <span class="sort-icon">&#8645;</span></th>
-          <th class="sortable num" data-col="emailsSent">Emails Sent <span class="sort-icon">&#8645;</span></th>
-          <th class="sortable num" data-col="emailsReceived">Emails Received <span class="sort-icon">&#8645;</span></th>
-          <th class="sortable num" data-col="smsSent">SMS Sent <span class="sort-icon">&#8645;</span></th>
-          <th class="sortable num" data-col="smsReceived">SMS Received <span class="sort-icon">&#8645;</span></th>
-          <th class="sortable num" data-col="chatsEngaged">Chats Engaged <span class="sort-icon">&#8645;</span></th>
-          <th class="sortable num" data-col="tasksCreated">Tasks Created <span class="sort-icon">&#8645;</span></th>
-          <th class="sortable num" data-col="tasksCompleted">Tasks Completed <span class="sort-icon">&#8645;</span></th>
-        </tr>
-      </thead>
+      <thead id="tableHead"></thead>
       <tbody id="tableBody">
         <tr class="empty-row">
-          <td colspan="9">Loading saved report data&hellip;</td>
+          <td colspan="10">Loading saved report data&hellip;</td>
         </tr>
       </tbody>
       <tfoot id="tableFoot"></tfoot>
@@ -124,10 +96,14 @@
     <div class="settings-group">
       <label class="settings-label">Where the numbers come from</label>
       <p class="settings-hint">
-        Once a day, a small program signs in to HubSpot and counts up each rep's activity
-        (calls, emails, texts, chats, and tasks) for that day. It saves those counts to a
-        plain data file that this page reads &mdash; so the page itself never has to contact
-        HubSpot directly. That keeps things simple, free to host, and easy on HubSpot's usage limits.
+        This page can show three different reports &mdash; <strong>Sales Activities</strong>,
+        <strong>Bulk Orders</strong>, and <strong>Team Store</strong> &mdash; switchable from the
+        <strong>Report</strong> dropdown above the date filters. Right now, while the production
+        HubSpot connection is still being set up, the numbers are brought in from the company's
+        exported sales reports rather than pulled live. A small program converts each export into
+        the plain data file this page reads, so the page itself stays simple, free to host, and
+        easy on HubSpot's usage limits. (A daily automatic HubSpot pull is already running quietly
+        in the background and will take over once production access is ready.)
       </p>
       <p class="settings-hint" id="dataFreshness">Data last updated: &ndash;</p>
     </div>
@@ -137,8 +113,9 @@
     <h3 class="settings-subtitle">How to read this page</h3>
     <div class="how-it-works">
       <ol>
-        <li>Pick a date range at the top &mdash; Today, Yesterday, This Week, a custom range, etc.</li>
-        <li>The summary boxes and table below add up that rep's activity for the days in that range.</li>
+        <li>Choose a report from the <strong>Report</strong> dropdown &mdash; Sales Activities, Bulk Orders, or Team Store.</li>
+        <li>Pick a date range &mdash; Today, Yesterday, This Week, a custom range, etc.</li>
+        <li>The summary boxes and table below add up that rep's numbers for the days in that range.</li>
         <li>Click any column header to sort by it, or use <strong>Export CSV</strong> to download the table as a spreadsheet.</li>
         <li><strong>Refresh</strong> reloads the saved data file in case it was updated since you opened the page.</li>
       </ol>
@@ -148,12 +125,33 @@
 
     <h3 class="settings-subtitle">Definitions</h3>
     <div class="how-it-works">
+      <p><strong>Sales Activities</strong></p>
       <ul>
-        <li><strong>Pipeline Touch</strong> &mdash; calls the rep logged in HubSpot.</li>
-        <li><strong>Emails Sent / Received</strong> &mdash; outgoing and incoming emails logged on HubSpot records.</li>
-        <li><strong>SMS Sent / Received</strong> &mdash; text messages logged in HubSpot.</li>
+        <li><strong>Pipeline Touch</strong> &mdash; calls the rep logged.</li>
+        <li><strong>Emails Sent / Received</strong> &mdash; outgoing and incoming emails logged on records.</li>
+        <li><strong>SMS Sent / Received</strong> &mdash; text messages logged.</li>
         <li><strong>Chats Engaged</strong> &mdash; chat conversations the rep took part in.</li>
         <li><strong>Tasks Created / Completed</strong> &mdash; tasks the rep created, and tasks they marked done, in that period.</li>
+      </ul>
+
+      <p style="margin-top:16px"><strong>Bulk Orders</strong></p>
+      <ul>
+        <li><strong>Quotes Created / Value</strong> &mdash; number of bulk quotes started, and their combined dollar value.</li>
+        <li><strong>Quotes Committed</strong> &mdash; quotes the customer agreed to move forward with.</li>
+        <li><strong>Closed Lost Deals</strong> &mdash; bulk deals that didn't close.</li>
+        <li><strong>Bulk Conversions</strong> &mdash; quotes that turned into actual orders.</li>
+        <li><strong>Bulk Revenue</strong> &mdash; dollar amount of bulk orders written.</li>
+        <li><strong>Bulk Orders Written</strong> &mdash; number of bulk orders placed.</li>
+      </ul>
+
+      <p style="margin-top:16px"><strong>Team Store</strong></p>
+      <ul>
+        <li><strong>Build Requests</strong> &mdash; new online team store setup requests.</li>
+        <li><strong>Went Live</strong> &mdash; stores that finished setup and opened.</li>
+        <li><strong>Stores w/ Revenue</strong> &mdash; open stores that have brought in sales.</li>
+        <li><strong>Gross Revenue</strong> &mdash; total sales from open team stores.</li>
+        <li><strong>Open Stores w/ Revenue / No Revenue</strong> &mdash; how many open stores have, or haven't yet, generated sales.</li>
+        <li><strong>TS Transactions</strong> &mdash; number of orders placed through team stores.</li>
       </ul>
     </div>
   </section>

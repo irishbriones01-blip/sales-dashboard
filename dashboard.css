@@ -70,6 +70,31 @@ body {
   align-items: center;
   gap: 12px;
 }
+.report-picker { display: flex; align-items: center; gap: 8px; }
+.report-picker label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-light);
+}
+.report-picker select {
+  padding: 7px 30px 7px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--text-dark);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23718096'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+.report-picker select:hover { border-color: var(--hs-orange); }
+.report-picker select:focus { outline: none; border-color: var(--hs-orange); }
+
 .quick-filters { display: flex; flex-wrap: wrap; gap: 6px; }
 .filter-btn {
   padding: 6px 12px;
