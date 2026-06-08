@@ -373,19 +373,12 @@ body {
 
 a.hs-link {
   color: inherit;
-  font-weight: inherit;
+  font-weight: 700;
   text-decoration: none;
   cursor: pointer;
-  border-bottom: 1px dashed currentColor;
-  opacity: 0.92;
-  transition: opacity 0.15s, color 0.15s;
+  transition: color 0.15s;
 }
-a.hs-link:hover {
-  color: var(--hs-orange);
-  opacity: 1;
-  border-bottom-style: solid;
-  border-bottom-color: var(--hs-orange);
-}
+a.hs-link:hover { color: var(--hs-orange); }
 .chart-canvas-wrap canvas { cursor: pointer; }
 .data-table tbody tr:last-child td { border-bottom: none; }
 
