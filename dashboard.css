@@ -2,14 +2,21 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
+  /* HubSpot's actual brand palette — dark navy chrome + signature orange accents,
+     the same combination used across the HubSpot product and marketing site. */
+  --hs-navy: #33475b;
+  --hs-navy-mid: #516f90;
+  --hs-navy-pale: #7c98b6;
   --hs-orange: #ff7a59;
   --hs-orange-dark: #e8603c;
+  --hs-teal: #00bda5;
   --hs-blue: #0091ae;
-  --text-dark: #2d3748;
-  --text-mid: #4a5568;
-  --text-light: #718096;
-  --border: #e2e8f0;
-  --bg: #f7fafc;
+  --text-dark: #33475b;
+  --text-mid: #516f90;
+  --text-light: #7c98b6;
+  --border: #cbd6e2;
+  --bg: #f5f8fa;
+  --bg-soft: #eaf0f6;
   --bg-card: #fff;
   --radius: 8px;
 }
@@ -26,7 +33,7 @@ body {
 
 /* HEADER */
 .app-header {
-  background: var(--hs-orange);
+  background: var(--hs-navy);
   color: #fff;
   display: flex;
   align-items: center;
@@ -36,16 +43,16 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
 }
 .header-left { display: flex; align-items: center; gap: 10px; }
-.hs-logo { font-size: 22px; }
+.hs-logo { font-size: 22px; color: var(--hs-orange); }
 .app-title { font-weight: 700; font-size: 16px; letter-spacing: -0.3px; }
 .header-right { display: flex; gap: 4px; }
 .tab-btn {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.1);
   border: none;
-  color: rgba(255,255,255,0.85);
+  color: rgba(255,255,255,0.75);
   padding: 6px 14px;
   border-radius: 6px;
   font-size: 13px;
@@ -53,8 +60,8 @@ body {
   cursor: pointer;
   transition: all 0.15s;
 }
-.tab-btn:hover { background: rgba(255,255,255,0.25); }
-.tab-btn.active { background: rgba(255,255,255,0.95); color: var(--hs-orange); font-weight: 700; }
+.tab-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+.tab-btn.active { background: var(--hs-orange); color: #fff; font-weight: 700; }
 
 /* TABS */
 .tab-content { display: none; }
@@ -334,7 +341,7 @@ body {
   font-size: 13px;
 }
 .data-table thead tr {
-  background: #f0f4f8;
+  background: var(--bg-soft);
   border-bottom: 2px solid var(--border);
 }
 .data-table th {
@@ -375,7 +382,7 @@ a.hs-link:hover { color: var(--hs-orange-dark); border-bottom-style: solid; }
 .data-table tbody tr:last-child td { border-bottom: none; }
 
 .data-table tfoot tr {
-  background: #f0f4f8;
+  background: var(--bg-soft);
   border-top: 2px solid var(--border);
   font-weight: 700;
 }
