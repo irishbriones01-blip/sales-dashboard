@@ -372,13 +372,21 @@ body {
 .data-table tbody tr:hover { background: #fff8f6; }
 
 a.hs-link {
-  color: var(--hs-orange);
-  font-weight: 600;
+  color: inherit;
+  font-weight: inherit;
   text-decoration: none;
   cursor: pointer;
-  border-bottom: 1px dashed var(--hs-orange);
+  border-bottom: 1px dashed currentColor;
+  opacity: 0.92;
+  transition: opacity 0.15s, color 0.15s;
 }
-a.hs-link:hover { color: var(--hs-orange-dark); border-bottom-style: solid; }
+a.hs-link:hover {
+  color: var(--hs-orange);
+  opacity: 1;
+  border-bottom-style: solid;
+  border-bottom-color: var(--hs-orange);
+}
+.chart-canvas-wrap canvas { cursor: pointer; }
 .data-table tbody tr:last-child td { border-bottom: none; }
 
 .data-table tfoot tr {

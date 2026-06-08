@@ -55,6 +55,18 @@ const REPORTS = {
 };
 const DEFAULT_REPORT = 'activities';
 
+// Where "open in HubSpot" links/clicks send people — the team's existing
+// Sales Activity reports dashboard inside HubSpot. (HubSpot doesn't support
+// pre-filtered deep links — we checked both dashboards and record lists — so
+// every number/chart points at this same dashboard; from there, HubSpot's
+// own Owner + Date filters narrow it down to the rep and day you're after.)
+const HUBSPOT_DASHBOARD_URL = 'https://app.hubspot.com/reports-dashboard/47316647/view/19277797';
+
+// Wraps a displayed value so it opens the HubSpot dashboard in a new tab.
+function hsLink(display) {
+  return `<a class="hs-link" href="${HUBSPOT_DASHBOARD_URL}" target="_blank" rel="noopener" title="Open in HubSpot">${display}</a>`;
+}
+
 const MONTHS_LONG = ['January','February','March','April','May','June',
   'July','August','September','October','November','December'];
 const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun',
@@ -246,7 +258,7 @@ function renderSummary(rows) {
   const cards = [`
     <div class="card" id="cardReps">
       <div class="card-label">Active Reps</div>
-      <div class="card-value">${rows.length || '-'}</div>
+      <div class="card-value">${rows.length ? hsLink(rows.length) : '-'}</div>
     </div>`];
 
   report.summary.forEach(key => {
@@ -255,7 +267,7 @@ function renderSummary(rows) {
     cards.push(`
     <div class="card">
       <div class="card-label">${escHtml(metric.label)}</div>
-      <div class="card-value">${formatMetric(sum(key), metric)}</div>
+      <div class="card-value">${hsLink(formatMetric(sum(key), metric))}</div>
     </div>`);
   });
 
@@ -320,6 +332,10 @@ function renderCharts(rows) {
         indexAxis: 'y',
         responsive: true,
         maintainAspectRatio: false,
+        onClick: () => window.open(HUBSPOT_DASHBOARD_URL, '_blank', 'noopener'),
+        onHover: (evt, elements) => {
+          evt.native.target.style.cursor = elements.length ? 'pointer' : 'default';
+        },
         plugins: {
           legend: { display: false },
           tooltip: { callbacks: { label: ctx => formatMetric(ctx.parsed.x, m) } },
@@ -362,13 +378,13 @@ function renderTable(rows) {
 
   tbody.innerHTML = sorted.map(row => `<tr>
     <td>${escHtml(row.rep || '-')}</td>
-    ${report.metrics.map(m => `<td class="num">${formatMetric(row[m.key] || 0, m)}</td>`).join('')}
+    ${report.metrics.map(m => `<td class="num">${hsLink(formatMetric(row[m.key] || 0, m))}</td>`).join('')}
   </tr>`).join('');
 
   const sum = key => sorted.reduce((a, r) => a + (r[key] || 0), 0);
   tfoot.innerHTML = `<tr>
     <td><strong>Totals</strong></td>
-    ${report.metrics.map(m => `<td class="num"><strong>${formatMetric(sum(m.key), m)}</strong></td>`).join('')}
+    ${report.metrics.map(m => `<td class="num"><strong>${hsLink(formatMetric(sum(m.key), m))}</strong></td>`).join('')}
   </tr>`;
 }
 
