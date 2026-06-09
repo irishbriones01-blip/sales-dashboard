@@ -286,6 +286,7 @@ function renderSummary(rows) {
 
 const TOP_N = 5;
 const CHART_COLOR = '#ff7a59';
+Chart.register(ChartDataLabels);
 
 function destroyCharts() {
   chartInstances.forEach(c => c.destroy());
@@ -352,10 +353,18 @@ function renderCharts(rows) {
         plugins: {
           legend: { display: false },
           tooltip: { callbacks: { label: ctx => formatMetric(ctx.parsed.x, m) } },
+          datalabels: {
+            anchor: 'end',
+            align: 'end',
+            formatter: value => formatMetric(value, m),
+            color: '#33475b',
+            font: { size: 11, weight: '600' },
+          },
         },
         scales: {
           x: {
             beginAtZero: true,
+            grace: '18%',
             ticks: { callback: v => formatMetric(v, m) },
           },
           y: { ticks: { autoSkip: false } },
