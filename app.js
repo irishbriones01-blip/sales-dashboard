@@ -14,7 +14,7 @@ const REPORTS = {
     dataUrl: 'data/report-activities.json',
     dashboardUrl: 'https://app.hubspot.com/reports-dashboard/47316647/view/19277797',
     metrics: [
-      { key: 'pipelineTouch',  label: 'Pipeline Touch' },
+      { key: 'pipelineTouch',  label: 'Pipeline Calls' },
       { key: 'emailsSent',     label: 'Emails Sent' },
       { key: 'emailsReceived', label: 'Emails Received' },
       { key: 'smsSent',        label: 'SMS Sent' },
