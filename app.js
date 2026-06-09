@@ -311,6 +311,18 @@ function renderCharts(rows) {
       <div class="chart-canvas-wrap"><canvas id="chart-${m.key}"></canvas></div>
     </div>`).join('');
 
+  // Balance grid so the last row has no empty cells.
+  // Even count (e.g. 8 in Activities) → 2 cols → perfect rows.
+  // Odd count (e.g. 7 in Bulk / Team Store) → 3 cols → last card spans full width.
+  const total = report.metrics.length;
+  const cols = total % 2 === 0 ? 2 : 3;
+  grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+  const remainder = total % cols;
+  if (remainder !== 0) {
+    const cards = grid.querySelectorAll('.chart-card');
+    cards[cards.length - 1].style.gridColumn = `span ${cols - remainder + 1}`;
+  }
+
   report.metrics.forEach(m => {
     const top = [...rows]
       .filter(r => (r[m.key] || 0) > 0)
