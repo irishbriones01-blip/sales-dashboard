@@ -1,7 +1,7 @@
 {
   "label": "Sales Activities",
   "source": "Sales Inputs and Outcomes (Activities).xlsx",
-  "generatedAt": "2026-06-08T14:01:28.259Z",
+  "generatedAt": "2026-06-09T10:17:02.245Z",
   "entries": [
     {
       "date": "2026-04-01",
@@ -13382,6 +13382,198 @@
       "chatsEngaged": 0,
       "tasksCreated": 0,
       "tasksCompleted": 0
+    },
+    {
+      "date": "2026-06-08",
+      "rep": "Christa Molison",
+      "pipelineTouch": 12,
+      "emailsSent": 11,
+      "emailsReceived": 1,
+      "smsSent": 2,
+      "smsReceived": 9,
+      "chatsEngaged": 0,
+      "tasksCreated": 18,
+      "tasksCompleted": 5
+    },
+    {
+      "date": "2026-06-08",
+      "rep": "Crystal Gordon",
+      "pipelineTouch": 17,
+      "emailsSent": 24,
+      "emailsReceived": 3,
+      "smsSent": 9,
+      "smsReceived": 0,
+      "chatsEngaged": 0,
+      "tasksCreated": 17,
+      "tasksCompleted": 2
+    },
+    {
+      "date": "2026-06-08",
+      "rep": "Dan Girard",
+      "pipelineTouch": 42,
+      "emailsSent": 25,
+      "emailsReceived": 18,
+      "smsSent": 15,
+      "smsReceived": 9,
+      "chatsEngaged": 0,
+      "tasksCreated": 18,
+      "tasksCompleted": 1
+    },
+    {
+      "date": "2026-06-08",
+      "rep": "Elando (Allan) Tomlin",
+      "pipelineTouch": 28,
+      "emailsSent": 34,
+      "emailsReceived": 14,
+      "smsSent": 24,
+      "smsReceived": 11,
+      "chatsEngaged": 4,
+      "tasksCreated": 0,
+      "tasksCompleted": 0
+    },
+    {
+      "date": "2026-06-08",
+      "rep": "Isis Hyman",
+      "pipelineTouch": 5,
+      "emailsSent": 5,
+      "emailsReceived": 0,
+      "smsSent": 0,
+      "smsReceived": 0,
+      "chatsEngaged": 0,
+      "tasksCreated": 5,
+      "tasksCompleted": 0
+    },
+    {
+      "date": "2026-06-08",
+      "rep": "Jada Dehaney",
+      "pipelineTouch": 15,
+      "emailsSent": 17,
+      "emailsReceived": 5,
+      "smsSent": 34,
+      "smsReceived": 14,
+      "chatsEngaged": 0,
+      "tasksCreated": 20,
+      "tasksCompleted": 0
+    },
+    {
+      "date": "2026-06-08",
+      "rep": "Lydia Seivwright",
+      "pipelineTouch": 12,
+      "emailsSent": 30,
+      "emailsReceived": 1,
+      "smsSent": 0,
+      "smsReceived": 1,
+      "chatsEngaged": 0,
+      "tasksCreated": 10,
+      "tasksCompleted": 1
+    },
+    {
+      "date": "2026-06-08",
+      "rep": "Petagaye Clarke",
+      "pipelineTouch": 11,
+      "emailsSent": 18,
+      "emailsReceived": 3,
+      "smsSent": 19,
+      "smsReceived": 0,
+      "chatsEngaged": 0,
+      "tasksCreated": 16,
+      "tasksCompleted": 5
+    },
+    {
+      "date": "2026-06-08",
+      "rep": "Rockel Royal",
+      "pipelineTouch": 10,
+      "emailsSent": 22,
+      "emailsReceived": 2,
+      "smsSent": 8,
+      "smsReceived": 3,
+      "chatsEngaged": 3,
+      "tasksCreated": 17,
+      "tasksCompleted": 0
+    },
+    {
+      "date": "2026-06-08",
+      "rep": "Sean Bailey",
+      "pipelineTouch": 4,
+      "emailsSent": 17,
+      "emailsReceived": 1,
+      "smsSent": 0,
+      "smsReceived": 0,
+      "chatsEngaged": 0,
+      "tasksCreated": 6,
+      "tasksCompleted": 1
+    },
+    {
+      "date": "2026-06-08",
+      "rep": "Shadane Butler",
+      "pipelineTouch": 7,
+      "emailsSent": 0,
+      "emailsReceived": 0,
+      "smsSent": 6,
+      "smsReceived": 8,
+      "chatsEngaged": 0,
+      "tasksCreated": 2,
+      "tasksCompleted": 0
+    },
+    {
+      "date": "2026-06-08",
+      "rep": "Shawna Smith",
+      "pipelineTouch": 5,
+      "emailsSent": 9,
+      "emailsReceived": 9,
+      "smsSent": 2,
+      "smsReceived": 0,
+      "chatsEngaged": 0,
+      "tasksCreated": 7,
+      "tasksCompleted": 0
+    },
+    {
+      "date": "2026-06-08",
+      "rep": "Simone Brown",
+      "pipelineTouch": 24,
+      "emailsSent": 30,
+      "emailsReceived": 5,
+      "smsSent": 0,
+      "smsReceived": 5,
+      "chatsEngaged": 0,
+      "tasksCreated": 22,
+      "tasksCompleted": 3
+    },
+    {
+      "date": "2026-06-08",
+      "rep": "Tami Parton",
+      "pipelineTouch": 9,
+      "emailsSent": 17,
+      "emailsReceived": 6,
+      "smsSent": 0,
+      "smsReceived": 0,
+      "chatsEngaged": 0,
+      "tasksCreated": 11,
+      "tasksCompleted": 1
+    },
+    {
+      "date": "2026-06-08",
+      "rep": "Terry Ann Green",
+      "pipelineTouch": 32,
+      "emailsSent": 7,
+      "emailsReceived": 5,
+      "smsSent": 1,
+      "smsReceived": 6,
+      "chatsEngaged": 1,
+      "tasksCreated": 1,
+      "tasksCompleted": 0
+    },
+    {
+      "date": "2026-06-08",
+      "rep": "Verrona Lamoth",
+      "pipelineTouch": 17,
+      "emailsSent": 19,
+      "emailsReceived": 2,
+      "smsSent": 3,
+      "smsReceived": 1,
+      "chatsEngaged": 0,
+      "tasksCreated": 63,
+      "tasksCompleted": 3
     }
   ]
 }
