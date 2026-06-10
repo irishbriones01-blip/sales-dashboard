@@ -1,7 +1,7 @@
 {
   "label": "Bulk Orders",
   "source": "Sales Inputs and Outcomes (Bulk).xlsx",
-  "generatedAt": "2026-06-09T10:22:58.876Z",
+  "generatedAt": "2026-06-10T11:01:20.327Z",
   "entries": [
     {
       "date": "2026-04-01",
@@ -12440,6 +12440,182 @@
       "quotesValue": 0,
       "quotesCommitted": 0,
       "closedLost": 0,
+      "bulkConversions": 0,
+      "bulkRevenue": 0,
+      "bulkOrders": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Christa Molison",
+      "quotes": 0,
+      "quotesValue": 0,
+      "quotesCommitted": 0,
+      "closedLost": 0,
+      "bulkConversions": 0,
+      "bulkRevenue": 0,
+      "bulkOrders": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Crystal Gordon",
+      "quotes": 0,
+      "quotesValue": 0,
+      "quotesCommitted": 0,
+      "closedLost": 0,
+      "bulkConversions": 0,
+      "bulkRevenue": 0,
+      "bulkOrders": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Dan Girard",
+      "quotes": 2,
+      "quotesValue": 803.88,
+      "quotesCommitted": 0,
+      "closedLost": 3,
+      "bulkConversions": 5,
+      "bulkRevenue": 3116.63,
+      "bulkOrders": 5
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Elando (Allan) Tomlin",
+      "quotes": 2,
+      "quotesValue": 1062.61,
+      "quotesCommitted": 0,
+      "closedLost": 0,
+      "bulkConversions": 1,
+      "bulkRevenue": 429.33,
+      "bulkOrders": 1
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Isis Hyman",
+      "quotes": 0,
+      "quotesValue": 0,
+      "quotesCommitted": 0,
+      "closedLost": 0,
+      "bulkConversions": 0,
+      "bulkRevenue": 0,
+      "bulkOrders": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Jada Dehaney",
+      "quotes": 0,
+      "quotesValue": 0,
+      "quotesCommitted": 0,
+      "closedLost": 0,
+      "bulkConversions": 0,
+      "bulkRevenue": 0,
+      "bulkOrders": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Lydia Seivwright",
+      "quotes": 0,
+      "quotesValue": 0,
+      "quotesCommitted": 0,
+      "closedLost": 0,
+      "bulkConversions": 0,
+      "bulkRevenue": 0,
+      "bulkOrders": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Petagaye Clarke",
+      "quotes": 1,
+      "quotesValue": 244.14,
+      "quotesCommitted": 0,
+      "closedLost": 1,
+      "bulkConversions": 0,
+      "bulkRevenue": 0,
+      "bulkOrders": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Rockel Royal",
+      "quotes": 0,
+      "quotesValue": 0,
+      "quotesCommitted": 0,
+      "closedLost": 2,
+      "bulkConversions": 3,
+      "bulkRevenue": 1915.06,
+      "bulkOrders": 3
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Sean Bailey",
+      "quotes": 0,
+      "quotesValue": 0,
+      "quotesCommitted": 0,
+      "closedLost": 1,
+      "bulkConversions": 0,
+      "bulkRevenue": 0,
+      "bulkOrders": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Shadane Butler",
+      "quotes": 0,
+      "quotesValue": 0,
+      "quotesCommitted": 0,
+      "closedLost": 0,
+      "bulkConversions": 0,
+      "bulkRevenue": 0,
+      "bulkOrders": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Shawna Smith",
+      "quotes": 1,
+      "quotesValue": 4500,
+      "quotesCommitted": 0,
+      "closedLost": 0,
+      "bulkConversions": 1,
+      "bulkRevenue": 1385.75,
+      "bulkOrders": 1
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Simone Brown",
+      "quotes": 0,
+      "quotesValue": 0,
+      "quotesCommitted": 0,
+      "closedLost": 0,
+      "bulkConversions": 0,
+      "bulkRevenue": 0,
+      "bulkOrders": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Tami Parton",
+      "quotes": 1,
+      "quotesValue": 1114.3,
+      "quotesCommitted": 0,
+      "closedLost": 0,
+      "bulkConversions": 0,
+      "bulkRevenue": 0,
+      "bulkOrders": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Terry Ann Green",
+      "quotes": 0,
+      "quotesValue": 0,
+      "quotesCommitted": 1,
+      "closedLost": 0,
+      "bulkConversions": 1,
+      "bulkRevenue": 1120,
+      "bulkOrders": 1
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Verrona Lamoth",
+      "quotes": 2,
+      "quotesValue": 1334.45,
+      "quotesCommitted": 0,
+      "closedLost": 1,
       "bulkConversions": 0,
       "bulkRevenue": 0,
       "bulkOrders": 0

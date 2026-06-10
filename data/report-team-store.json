@@ -1,7 +1,7 @@
 {
   "label": "Team Store",
   "source": "Sales Inputs and Outcomes (Team Store).xlsx",
-  "generatedAt": "2026-06-09T10:22:58.900Z",
+  "generatedAt": "2026-06-10T11:01:20.368Z",
   "entries": [
     {
       "date": "2026-04-01",
@@ -12435,6 +12435,182 @@
     },
     {
       "date": "2026-06-08",
+      "rep": "Verrona Lamoth",
+      "buildRequests": 0,
+      "wentLive": 0,
+      "storesWithRevenue": 0,
+      "grossRevenue": 0,
+      "convertsWithRevenue": 0,
+      "convertsNoRevenue": 0,
+      "transactions": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Christa Molison",
+      "buildRequests": 0,
+      "wentLive": 0,
+      "storesWithRevenue": 0,
+      "grossRevenue": 0,
+      "convertsWithRevenue": 0,
+      "convertsNoRevenue": 0,
+      "transactions": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Crystal Gordon",
+      "buildRequests": 0,
+      "wentLive": 0,
+      "storesWithRevenue": 0,
+      "grossRevenue": 0,
+      "convertsWithRevenue": 0,
+      "convertsNoRevenue": 0,
+      "transactions": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Dan Girard",
+      "buildRequests": 0,
+      "wentLive": 2,
+      "storesWithRevenue": 11,
+      "grossRevenue": 3207.5,
+      "convertsWithRevenue": 11,
+      "convertsNoRevenue": 2,
+      "transactions": 15
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Elando (Allan) Tomlin",
+      "buildRequests": 0,
+      "wentLive": 0,
+      "storesWithRevenue": 1,
+      "grossRevenue": 205.99,
+      "convertsWithRevenue": 1,
+      "convertsNoRevenue": 0,
+      "transactions": 3
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Isis Hyman",
+      "buildRequests": 0,
+      "wentLive": 0,
+      "storesWithRevenue": 0,
+      "grossRevenue": 0,
+      "convertsWithRevenue": 0,
+      "convertsNoRevenue": 0,
+      "transactions": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Jada Dehaney",
+      "buildRequests": 0,
+      "wentLive": 1,
+      "storesWithRevenue": 0,
+      "grossRevenue": 0,
+      "convertsWithRevenue": 0,
+      "convertsNoRevenue": 1,
+      "transactions": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Lydia Seivwright",
+      "buildRequests": 0,
+      "wentLive": 0,
+      "storesWithRevenue": 0,
+      "grossRevenue": 0,
+      "convertsWithRevenue": 0,
+      "convertsNoRevenue": 0,
+      "transactions": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Petagaye Clarke",
+      "buildRequests": 0,
+      "wentLive": 0,
+      "storesWithRevenue": 1,
+      "grossRevenue": 204.89,
+      "convertsWithRevenue": 1,
+      "convertsNoRevenue": 0,
+      "transactions": 1
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Rockel Royal",
+      "buildRequests": 0,
+      "wentLive": 0,
+      "storesWithRevenue": 0,
+      "grossRevenue": 0,
+      "convertsWithRevenue": 0,
+      "convertsNoRevenue": 0,
+      "transactions": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Sean Bailey",
+      "buildRequests": 0,
+      "wentLive": 0,
+      "storesWithRevenue": 0,
+      "grossRevenue": 0,
+      "convertsWithRevenue": 0,
+      "convertsNoRevenue": 0,
+      "transactions": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Shadane Butler",
+      "buildRequests": 0,
+      "wentLive": 0,
+      "storesWithRevenue": 0,
+      "grossRevenue": 0,
+      "convertsWithRevenue": 0,
+      "convertsNoRevenue": 0,
+      "transactions": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Shawna Smith",
+      "buildRequests": 0,
+      "wentLive": 4,
+      "storesWithRevenue": 3,
+      "grossRevenue": 378.2,
+      "convertsWithRevenue": 3,
+      "convertsNoRevenue": 2,
+      "transactions": 2
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Simone Brown",
+      "buildRequests": 0,
+      "wentLive": 0,
+      "storesWithRevenue": 0,
+      "grossRevenue": 0,
+      "convertsWithRevenue": 0,
+      "convertsNoRevenue": 0,
+      "transactions": 0
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Tami Parton",
+      "buildRequests": 0,
+      "wentLive": 0,
+      "storesWithRevenue": 3,
+      "grossRevenue": 93.75,
+      "convertsWithRevenue": 3,
+      "convertsNoRevenue": 0,
+      "transactions": 3
+    },
+    {
+      "date": "2026-06-09",
+      "rep": "Terry Ann Green",
+      "buildRequests": 0,
+      "wentLive": 1,
+      "storesWithRevenue": 4,
+      "grossRevenue": 228.99,
+      "convertsWithRevenue": 4,
+      "convertsNoRevenue": 0,
+      "transactions": 3
+    },
+    {
+      "date": "2026-06-09",
       "rep": "Verrona Lamoth",
       "buildRequests": 0,
       "wentLive": 0,
